@@ -1,0 +1,8 @@
+{
+	"string":"some string",
+	"bool":true,
+	"integer":5,
+	"data":{
+		"string":"some other string"
+	}
+}

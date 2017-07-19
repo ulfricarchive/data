@@ -1,4 +1,4 @@
-package com.ulfric.data;
+package com.ulfric.data.config;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
