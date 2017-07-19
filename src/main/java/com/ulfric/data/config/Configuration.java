@@ -14,6 +14,7 @@ import com.ulfric.commons.nio.PathWatcher;
 import com.ulfric.commons.reflect.MethodHelper;
 import com.ulfric.commons.runtime.ShutdownHook;
 import com.ulfric.commons.runtime.ShutdownHookHelper;
+import com.ulfric.data.Savable;
 import com.ulfric.dragoon.reflect.Classes;
 
 import java.lang.reflect.Method;
@@ -27,7 +28,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public final class Configuration implements AutoCloseable {
+public final class Configuration implements Savable {
 
 	private static final ConcurrentMap<Path, Configuration> CONFIGS = new ConcurrentHashMap<>();
 	private static final Map<Class<?>, Class<? extends Change>> TRANSFORMED_CLASSES =
@@ -119,6 +120,7 @@ public final class Configuration implements AutoCloseable {
 		}
 	}
 
+	@Override
 	public void save() {
 		watcher.pause();
 		for (Change bean : beans.values()) {

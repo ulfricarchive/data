@@ -31,6 +31,7 @@ class DatabaseExtensionTest extends FileSystemTestSuite {
 		FileHelper.createDefaultFile(fileSystem.getPath("database", "hello", "hello.json"));
 		Greeting greeting = factory.request(Greeting.class);
 		Truth.assertThat(greeting.hello.getData("hello").getString("hello")).isEqualTo("saying hello");
+		greeting.hello.close();
 	}
 
 	@Test
@@ -38,6 +39,7 @@ class DatabaseExtensionTest extends FileSystemTestSuite {
 		FileHelper.createDefaultFile(fileSystem.getPath("database", "greeting", "hello", "hello.json"));
 		GreetingContainer greeting = factory.request(GreetingContainer.class);
 		Truth.assertThat(greeting.hello.getData("hello").getString("hello")).isEqualTo("say hello");
+		greeting.hello.close();
 	}
 
 	@Store

@@ -1,5 +1,6 @@
 package com.ulfric.data.database;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -26,6 +27,11 @@ class DatabaseTest extends FileSystemTestSuite {
 		database = Database.getDatabase(file);
 	}
 
+	@AfterEach
+	void shutdown() {
+		database.close();
+	}
+
 	@Test
 	void testGetAllData() {
 		Truth.assertThat(database.getAllData().count()).isEqualTo(1);
@@ -34,6 +40,11 @@ class DatabaseTest extends FileSystemTestSuite {
 	@Test
 	void testGetData() {
 		Truth.assertThat(database.getData("hello").getString("hello")).isEqualTo("hi");
+	}
+
+	@Test
+	void getDatabases() {
+		Truth.assertThat(Database.getDatabases()).containsExactly(database);
 	}
 
 }
