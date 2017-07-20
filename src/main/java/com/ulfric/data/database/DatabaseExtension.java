@@ -66,7 +66,6 @@ public class DatabaseExtension extends Extension {
 		void inject(Object value, Path root) {
 			Path location = root.resolve(fileName);
 			field.setAccessible(true);
-			System.out.println(location);
 			Try.toRun(() -> field.set(value, Store.getDatabase(location)));
 		}
 	}
