@@ -53,6 +53,26 @@ class DataTest extends FileSystemTestSuite {
 	}
 
 	@Test
+	void testGetStringList() {
+		Truth.assertThat(data.getStringList("stringlist")).containsExactly("first", "second");
+	}
+
+	@Test
+	void testGetStringListNothingPresent() {
+		Truth.assertThat(data.getStringList("not-real-value")).isNull();
+	}
+
+	@Test
+	void testGetStringMap() {
+		Truth.assertThat(data.getStringMap("stringmap")).containsEntry("key", "value");
+	}
+
+	@Test
+	void testGetStringMapNothingPresent() {
+		Truth.assertThat(data.getStringMap("not-real-value")).isNull();
+	}
+
+	@Test
 	void testGetData() {
 		Truth.assertThat(data.getData("data").getString("string")).isEqualTo("some other string");
 	}

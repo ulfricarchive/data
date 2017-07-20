@@ -4,5 +4,12 @@
 	"integer":5,
 	"data":{
 		"string":"some other string"
-	}
+	},
+	"stringmap":{
+		"key":"value"
+	},
+	"stringlist":[
+		"first",
+		"second"
+	]
 }
