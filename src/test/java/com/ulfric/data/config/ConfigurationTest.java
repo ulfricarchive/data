@@ -11,7 +11,6 @@ import com.google.common.truth.Truth;
 
 import com.ulfric.commons.concurrent.ThreadHelper;
 import com.ulfric.commons.value.Bean;
-import com.ulfric.data.config.Configuration;
 import com.ulfric.data.suite.PathWatcherTestSuite;
 import com.ulfric.veracity.Veracity;
 

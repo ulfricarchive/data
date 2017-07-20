@@ -8,9 +8,6 @@ import org.junit.runner.RunWith;
 import com.google.common.truth.Truth;
 
 import com.ulfric.commons.value.Bean;
-import com.ulfric.data.config.Configured;
-import com.ulfric.data.config.Settings;
-import com.ulfric.data.config.SettingsExtension;
 import com.ulfric.data.suite.PathWatcherTestSuite;
 import com.ulfric.dragoon.ObjectFactory;
 import com.ulfric.dragoon.application.Container;
