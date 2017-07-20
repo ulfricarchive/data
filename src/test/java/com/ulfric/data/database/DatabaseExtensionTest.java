@@ -42,16 +42,14 @@ class DatabaseExtensionTest extends FileSystemTestSuite {
 		greeting.hello.close();
 	}
 
-	@Store
 	public static class GreetingContainer extends Container {
-		@Store
-		Database hello;
+		@Database
+		Store hello;
 	}
 
-	@Store
 	public static class Greeting {
-		@Store("hello")
-		Database hello;
+		@Database("hello")
+		Store hello;
 	}
 
 }

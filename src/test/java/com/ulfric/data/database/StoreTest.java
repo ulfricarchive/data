@@ -14,17 +14,17 @@ import com.ulfric.veracity.suite.FileSystemTestSuite;
 import java.nio.file.Path;
 
 @RunWith(JUnitPlatform.class)
-class DatabaseTest extends FileSystemTestSuite {
+class StoreTest extends FileSystemTestSuite {
 
 	private Path hello;
-	private Database database;
+	private Store database;
 
 	@BeforeEach
 	void writeDefaultData() {
 		hello = file.resolve("hello.json");
 		FileHelper.createDirectories(file);
 		FileHelper.write(hello, "{\"hello\":\"hi\"}");
-		database = Database.getDatabase(file);
+		database = Store.getDatabase(file);
 	}
 
 	@AfterEach
@@ -44,7 +44,7 @@ class DatabaseTest extends FileSystemTestSuite {
 
 	@Test
 	void getDatabases() {
-		Truth.assertThat(Database.getDatabases()).containsExactly(database);
+		Truth.assertThat(Store.getDatabases()).containsExactly(database);
 	}
 
 }
