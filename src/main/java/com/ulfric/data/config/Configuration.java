@@ -8,6 +8,7 @@ import net.bytebuddy.matcher.ElementMatchers;
 
 import com.google.gson.JsonElement;
 
+import com.ulfric.commons.collection.MapHelper;
 import com.ulfric.commons.json.JsonHelper;
 import com.ulfric.commons.nio.FileHelper;
 import com.ulfric.commons.nio.PathWatcher;
@@ -25,12 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public final class Configuration implements Savable {
 
-	private static final ConcurrentMap<Path, Configuration> CONFIGS = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<Path, Configuration> CONFIGS = MapHelper.newConcurrentMap(2);
 	private static final Map<Class<?>, Class<? extends Change>> TRANSFORMED_CLASSES =
 			Collections.synchronizedMap(new WeakHashMap<>());
 
@@ -67,7 +67,7 @@ public final class Configuration implements Savable {
 
 	private final PathWatcher watcher;
 	private final Path file;
-	private final ConcurrentMap<Class<?>, Change> beans = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Class<?>, Change> beans = MapHelper.newConcurrentMap(1);
 	private final Runnable callback = this::update;
 
 	private Configuration(Path file) {
