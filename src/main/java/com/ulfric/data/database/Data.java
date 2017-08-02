@@ -72,6 +72,10 @@ public final class Data {
 		return read(path, element -> JsonHelper.read(element, STRING_MAP, Map.class));
 	}
 
+	public <T> T getAs(Class<T> type) {
+		return JsonHelper.read(data, type);
+	}
+
 	public void set(String path, Object value) {
 		delete(path);
 		data.add(path, JsonHelper.toJsonObject(value));

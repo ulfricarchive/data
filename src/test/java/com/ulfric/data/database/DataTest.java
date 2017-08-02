@@ -17,9 +17,7 @@ class DataTest extends FileSystemTestSuite {
 
 	@BeforeEach
 	void setup() {
-		file = fileSystem.getPath("datatest.json");
-		FileHelper.createDefaultFile(file);
-		data = Data.at(file);
+		data("datatest.json");
 	}
 
 	@Test
@@ -83,12 +81,28 @@ class DataTest extends FileSystemTestSuite {
 	}
 
 	@Test
+	void testGetAs() {
+		data("hello.json");
+		Truth.assertThat(data.getAs(Hello.class).hello).isEqualTo("default hello message");
+	}
+
+	@Test
 	void testSave() {
 		data.set("hello", "some greeting");
 		data.save();
 		data.save();
 		setup();
 		Truth.assertThat(data.getString("hello")).isEqualTo("some greeting");
+	}
+
+	private void data(String path) {
+		file = fileSystem.getPath(path);
+		FileHelper.createDefaultFile(file);
+		data = Data.at(file);
+	}
+
+	public static class Hello {
+		public String hello;
 	}
 
 }
