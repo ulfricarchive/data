@@ -4,8 +4,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 
 import com.google.common.truth.Truth;
 
@@ -16,7 +14,6 @@ import com.ulfric.veracity.Veracity;
 
 import java.time.Duration;
 
-@RunWith(JUnitPlatform.class)
 class ConfigurationTest extends PathWatcherTestSuite {
 
 	@BeforeAll

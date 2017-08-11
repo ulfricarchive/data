@@ -3,8 +3,6 @@ package com.ulfric.data.database;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 
 import com.google.common.truth.Truth;
 
@@ -13,7 +11,6 @@ import com.ulfric.veracity.suite.FileSystemTestSuite;
 
 import java.nio.file.Path;
 
-@RunWith(JUnitPlatform.class)
 class StoreTest extends FileSystemTestSuite {
 
 	private Path hello;

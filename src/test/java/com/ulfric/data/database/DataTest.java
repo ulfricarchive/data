@@ -2,15 +2,12 @@ package com.ulfric.data.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 
 import com.google.common.truth.Truth;
 
 import com.ulfric.commons.nio.FileHelper;
 import com.ulfric.veracity.suite.FileSystemTestSuite;
 
-@RunWith(JUnitPlatform.class)
 class DataTest extends FileSystemTestSuite {
 
 	private Data data;
