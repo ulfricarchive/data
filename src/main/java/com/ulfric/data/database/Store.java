@@ -2,7 +2,7 @@ package com.ulfric.data.database;
 
 import com.ulfric.commons.nio.FileHelper;
 import com.ulfric.data.Savable;
-import com.ulfric.tryto.Try;
+import com.ulfric.tryto.TryTo;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ public final class Store implements Savable {
 	}
 
 	public Stream<Data> getAllData() {
-		return Try.toGetIo(() -> Files.list(directory))
+		return TryTo.getIo(() -> Files.list(directory))
 				.map(Path::getFileName)
 				.map(Path::toString)
 				.map(path -> path.substring(0, path.length() - ".json".length()))

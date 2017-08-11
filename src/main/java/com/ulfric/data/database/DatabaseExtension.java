@@ -5,7 +5,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import com.ulfric.dragoon.application.Container;
 import com.ulfric.dragoon.extension.Extension;
 import com.ulfric.dragoon.extension.inject.Inject;
-import com.ulfric.tryto.Try;
+import com.ulfric.tryto.TryTo;
 
 import java.lang.reflect.Field;
 import java.nio.file.FileSystem;
@@ -66,7 +66,7 @@ public class DatabaseExtension extends Extension {
 		void inject(Object value, Path root) {
 			Path location = root.resolve(fileName);
 			field.setAccessible(true);
-			Try.toRun(() -> field.set(value, Store.getDatabase(location)));
+			TryTo.run(() -> field.set(value, Store.getDatabase(location)));
 		}
 	}
 
