@@ -12,4 +12,6 @@ public @interface Settings {
 
 	String value() default "";
 
+	ConfigType type() default ConfigType.JSON;
+
 }

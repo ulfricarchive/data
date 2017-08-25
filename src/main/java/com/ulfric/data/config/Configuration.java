@@ -62,16 +62,18 @@ public final class Configuration implements Savable {
 	private static Configuration newConfig(Path file) {
 		FileHelper.createDefaultFile(file);
 
-		return new Configuration(file);
+		return new Configuration(file, ConfigType.findType(file));
 	}
 
 	private final PathWatcher watcher;
 	private final Path file;
+	private final ConfigType type;
 	private final ConcurrentMap<Class<?>, Change> beans = MapHelper.newConcurrentMap(1);
 	private final Runnable callback = this::update;
 
-	private Configuration(Path file) {
+	private Configuration(Path file, ConfigType type) {
 		this.file = file;
+		this.type = type;
 
 		watcher = PathWatcher.watch(file);
 		watcher.callback(callback);
@@ -105,7 +107,7 @@ public final class Configuration implements Savable {
 	}
 
 	private void update() {
-		JsonElement json = JsonHelper.read(file, JsonElement.class);
+		JsonElement json = type.read(file);
 		beans.values().forEach(bean -> JsonHelper.override(json, bean));
 	}
 

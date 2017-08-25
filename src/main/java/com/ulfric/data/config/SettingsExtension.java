@@ -46,7 +46,7 @@ public class SettingsExtension extends Extension {
 	private String getFileName(Field field) {
 		Settings settings = field.getAnnotation(Settings.class); // TODO support stereotypes
 		String name = settings.value();
-		return (name.isEmpty() ? field.getName() : name) + ".json";
+		return (name.isEmpty() ? field.getName() : name) + settings.type().getExtension();
 	}
 
 }
