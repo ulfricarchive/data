@@ -3,6 +3,8 @@ package com.ulfric.data.suite;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import com.google.gson.JsonElement;
+
 import com.ulfric.commons.concurrent.ThreadHelper;
 import com.ulfric.commons.nio.FileHelper;
 import com.ulfric.commons.nio.PathWatcher;
@@ -59,9 +61,9 @@ public abstract class PathWatcherTestSuite extends FileSystemTestSuite { // TODO
 		threadField.set(null, ThreadHelper.start(originalThread::run, "mock-tick-task"));
 	}
 
-	protected final void notifyWatcher(Path file, String text) {
+	protected final void notifyWatcher(Path file, JsonElement json) {
 		pause();
-		FileHelper.write(file, text);
+		FileHelper.write(file, json.toString());
 		pause();
 	}
 

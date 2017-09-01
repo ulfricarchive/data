@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 
 public final class Data {
@@ -74,6 +75,10 @@ public final class Data {
 
 	public <T> T getAs(Class<T> type) {
 		return JsonHelper.read(data, type);
+	}
+
+	public Set<String> getKeys() {
+		return data.keySet();
 	}
 
 	public void set(String path, Object value) {

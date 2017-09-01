@@ -14,4 +14,6 @@ public @interface Settings {
 
 	ConfigType type() default ConfigType.JSON;
 
+	String handleField() default "";
+
 }

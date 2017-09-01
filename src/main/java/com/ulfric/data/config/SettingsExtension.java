@@ -2,6 +2,7 @@ package com.ulfric.data.config;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import com.ulfric.commons.reflect.FieldHelper;
 import com.ulfric.dragoon.application.Container;
 import com.ulfric.dragoon.exception.Try;
 import com.ulfric.dragoon.extension.Extension;
@@ -22,13 +23,24 @@ public class SettingsExtension extends Extension {
 			Path root = getRoot(Container.getOwningContainer(value));
 
 			for (Field field : FieldUtils.getAllFieldsList(value.getClass())) {
-				if (!field.isAnnotationPresent(Settings.class)) {
+				Settings settings = field.getAnnotation(Settings.class);
+				if (settings == null) {
 					continue;
 				}
 
 				Path location = root.resolve(getFileName(field));
 				field.setAccessible(true);
-				Try.to(() -> field.set(value, Configuration.create(location, field.getType())));
+				Configuration configuration = Configuration.create(location);
+				Try.to(() -> field.set(value, configuration.subscribe(field.getType())));
+
+				String handle = settings.handleField();
+				if (!handle.isEmpty()) {
+					FieldHelper.getDeclaredField(field.getDeclaringClass(), handle)
+						.filter(handleField -> handleField.getType() == Configuration.class)
+						.ifPresent(handleField -> {
+							Try.to(() -> handleField.set(value, configuration));
+						});
+				}
 			}
 		}
 

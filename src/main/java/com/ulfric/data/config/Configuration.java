@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 
 public final class Configuration implements Savable {
 
@@ -53,10 +54,15 @@ public final class Configuration implements Savable {
 	}
 
 	public static <T> T create(Path file, Class<T> type) {
-		Objects.requireNonNull(file, "file");
 		Objects.requireNonNull(type, "type");
 
-		return CONFIGS.computeIfAbsent(file, Configuration::newConfig).subscribe(type);
+		return create(file).subscribe(type);
+	}
+
+	public static Configuration create(Path file) {
+		Objects.requireNonNull(file, "file");
+
+		return CONFIGS.computeIfAbsent(file, Configuration::newConfig);
 	}
 
 	private static Configuration newConfig(Path file) {
@@ -68,6 +74,7 @@ public final class Configuration implements Savable {
 	private final PathWatcher watcher;
 	private final Path file;
 	private final ConfigType type;
+	private final List<Consumer<JsonElement>> subscriptions = new ArrayList<>();
 	private final ConcurrentMap<Class<?>, Change> beans = MapHelper.newConcurrentMap(1);
 	private final Runnable callback = this::update;
 
@@ -79,9 +86,29 @@ public final class Configuration implements Savable {
 		watcher.callback(callback);
 	}
 
-	private <T> T subscribe(Class<T> type) {
-		Object bean = beans.computeIfAbsent(type, key -> readAs(transform(key)));
+	public <T> T subscribe(Class<T> type) {
+		Objects.requireNonNull(type, "type");
+
+		Object bean = beans.computeIfAbsent(type, this::createBean);
 		return type.cast(bean);
+	}
+
+	public void subscribe(Runnable subscription) {
+		Objects.requireNonNull(subscription, "subscription");
+
+		subscribe(ignore -> subscription.run());
+	}
+
+	public void subscribe(Consumer<JsonElement> subscription) {
+		Objects.requireNonNull(subscription, "subscription");
+
+		this.subscriptions.add(subscription);
+	}
+
+	private Change createBean(Class<?> type) {
+		Change bean = readAs(transform(type));
+		subscribe(json -> JsonHelper.override(json, bean));
+		return bean;
 	}
 
 	private <T> T readAs(Class<T> type) {
@@ -108,7 +135,7 @@ public final class Configuration implements Savable {
 
 	private void update() {
 		JsonElement json = type.read(file);
-		beans.values().forEach(bean -> JsonHelper.override(json, bean));
+		subscriptions.forEach(consumer -> consumer.accept(json));
 	}
 
 	@Override
