@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public final class Store implements Savable {
@@ -46,6 +47,11 @@ public final class Store implements Savable {
 				.map(Path::toString)
 				.map(path -> path.substring(0, path.length() - ".json".length()))
 				.map(this::getData);
+	}
+
+	public Data getData(UUID name) {
+		Objects.requireNonNull(name, "name");
+		return getData(name.toString());
 	}
 
 	public Data getData(String name) {

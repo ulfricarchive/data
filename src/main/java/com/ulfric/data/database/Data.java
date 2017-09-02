@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public final class Data {
 
@@ -55,12 +57,16 @@ public final class Data {
 		return read(path, JsonElement::getAsString);
 	}
 
+	public UUID getUniqueId(String path) {
+		return read(path, element -> JsonHelper.read(element, UUID.class));
+	}
+
 	public Integer getInteger(String path) {
 		return read(path, JsonElement::getAsInt);
 	}
 
-	public Boolean getBoolean(String path) {
-		return read(path, JsonElement::getAsBoolean);
+	public boolean getBoolean(String path) {
+		return readBoolean(path, JsonElement::getAsBoolean);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -86,6 +92,11 @@ public final class Data {
 		data.add(path, JsonHelper.toJsonObject(value));
 	}
 
+	public void setBoolean(String path, Boolean value) {
+		delete(path);
+		data.addProperty(path, value);
+	}
+
 	public void delete(String path) {
 		Objects.requireNonNull(path, "path");
 
@@ -103,11 +114,25 @@ public final class Data {
 		return transformer.apply(element);
 	}
 
+	private boolean readBoolean(String path, Predicate<JsonElement> transformer) {
+		Objects.requireNonNull(path, "path");
+
+		JsonElement element = data.get(path);
+		if (element == null) {
+			return false;
+		}
+		return transformer.test(element);
+	}
+
 	public void save() {
 		if (needsChange.needsChange) {
 			needsChange.needsChange = false;
 			FileHelper.write(file, JsonHelper.toJson(data));
 		}
+	}
+
+	public Path getPath() {
+		return file;
 	}
 
 	private static class NeedsChange {
